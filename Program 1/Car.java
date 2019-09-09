@@ -1,9 +1,6 @@
 /*******************************************************
 *@author: Kimberly Morales
 
-
-
-
 History
 -9/5/19: Initial Version
 -9/6/19: Created class and methods, displayTable
@@ -11,30 +8,11 @@ History
 -9/8/19: Final version
 
 Purpose
--
-
-
+-To simulate the distances of three cars(a,b,c) that start one minute apart on a three segment course.
+Each segment is 1 mile and the respective speed limits are in mph: 20,60,30. 
 
 ***********************************************************/
 
-/*
-A
-0   0   0              
-30  20   0.16 mi
-60  20   0.34 mi 
-90  20   0.51 mi
-120  20  0.68 mi
-150  20  0.84 mi
-180  20   1  mi 
-
-%%%%%210   60  3.5
-210   20     1.16 mi
-240   
-270
-300
-
-
-*/
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,7 +21,6 @@ import java.io.*;
 import java.util.*;
 
 class Car {
-	//List<String[]> tableRow= new ArrayList <>();
 	String name;
 	double startTimeS;
 	
@@ -66,42 +43,91 @@ class Car {
 		return ts / 3600;
 	}
 	
-	public static double calculateSlope(double th, double mv, double d ){
+	public static double[] calculateDistance(double th, double d ){
+		double di [] = new double [2];
 		
-		if (d <= 1.3 && mv <= 20.0) {
-			return 20 * th;
+		if (th ==0.0 || d < 1.0 ) {
+			di[0] = 20; 
+			di[1] = Math.round(((20 * th) * 100)) / 100.0;
+			return di;
 		}
 		
-		else if (d > 1.3 && d <= 2.3 && mv <= 60.0) {
-			return 60 * th;
+		else if (d >= 1.0 && d < 2.0) {
+			di[0] = 60; 
+			di[1] = Math.round( ((60 * th) * 100)) / 100.0;
+			return di;
 		}
 		
-		else if (d > 2.3 && d <= 3.3 && mv <= 30.0) {
-			return 0;
+		else if (d >= 2.0 && d < 3.0) {
+			di[0] = 30; 
+			di[1] = Math.round( ((30 * th) *100)) / 100.0;
+			return di;
 		}
+		
+		
+
+		double error [] = {0,0}; 
+		return error;
 	}
 
-	public static void calculateInfo(Car c[]){
-		ArrayList<Integer[]> tableRow= new ArrayList <Integer[]>();
+	public static double[][] calculateDefaultValues(Car c[]){
 		double t = 0.0;
 		double th = 0.0;
 		double d = 0.0;
-		double v = 0.0;
-		double nums[] = new double[7];
-		Arrays.fill(nums, 0); 
+		int r = 1;
+		double dn [] = new double [2];
+		double rec[][] = new double[17][7];
+		//Arrays.fill(nums, 0); 
+
 		
-		
-		
-		while(d < 4.0) {
+		while(r < 17) {
 			if (t == 0.0) {
-				System.out.println(Arrays.toString(nums));
-				d = 4.0;
+				for (int i = 0; i < rec[0].length; i++) {
+					rec[0][i] = 0.0;
+				}
 			}
-			t+=30.0
-			th = convertSecsToHours(t);
 			
+			else {
+				th = convertSecsToHours(t);
+				dn = calculateDistance(th,d);
+				rec[r][0] = t;
+				rec[r][1] = dn[0];
+				rec[r][2] = dn[1];
+				r++;
+			}
+			t+=30.0;
+			d = dn[1];
+		}
+		return rec;
+	}
+	
+	public static double[][] populateValues(double r[][]) {
+		for (int i = 0; i < r.length; i++) {
+			for(int j = 0; j < r[0].length; j++) {	
+				if (i >= 2) {
+					r[i][3] = r[i-1][1];
+					r[i][4] = r[i-1][2];
+					if (i >= 4) {
+						r[i][5] = r[i-3][1];
+						r[i][6] = r[i-3][2];
+					}
+				}
 			
+				
+			}
 			
+		}
+		return r;
+	}
+	
+	
+	public static void displayInfo(double r[][]){
+		for (int i = 0; i < r.length; i++) {
+			for(int j = 0; j < r[0].length; j++) {	
+				System.out.print(r[i][j] + "\t\t");
+				
+			}
+			System.out.println();
 		}
 	}
 	
@@ -110,31 +136,30 @@ class Car {
 		ArrayList<String[]> tableRow= new ArrayList <String[]>();
 		
 		
-		String header [] = {"Time(s)                ", 
-		"car A                ",
-		"car B                ",
-		"car C                "};
+		String header [] = {"Time(s)\t\t", 
+		"car A\t\t\t\t",
+		"car B\t\t\t\t",
+		"car C\t\t\t\t"};
 		
-		String header2 [] = {"", "               speed    location", 
-		"      speed    location", 
-		"      speed    location"};
+		String header2 [] = {"\t\t", "speed    location\t\t", 
+		"speed    location\t\t", 
+		"speed    location\t\t"};
 		
 		tableRow.add(header);
 		tableRow.add(header2);
 		
 		for (int i = 0; i < tableRow.size(); i++) {
 			String[] strings = tableRow.get(i);
+			
 			for (int j = 0; j < strings.length; j++) {
 				System.out.print(strings[j] + " ");
 			}
 			System.out.println();
 			
 		}
-		
-		calculateInfo(car);
-		
-		
-		
+		double r[][] = calculateDefaultValues(car);
+		double rp[][] = populateValues(r);
+		displayInfo(rp);
 		
 	}
 	
