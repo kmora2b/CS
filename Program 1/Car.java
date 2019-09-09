@@ -2,10 +2,16 @@
 *@author: Kimberly Morales
 
 History
--9/5/19: Initial Version
--9/6/19: Created class and methods, displayTable
--9/7/19: Converted table structure to array list
--9/8/19: Final version
+-9/5/19: 
+	+Initial Version
+-9/6/19: 
+	+Created class and methods
+	+Created displayTable
+-9/7/19
+	+Converted table structure to array list
+	+Restructured calulculation
+-9/8/19
+	+Final version
 
 Purpose
 -To simulate the distances of three cars(a,b,c) that start one minute apart on a three segment course.
@@ -39,10 +45,12 @@ class Car {
 		this.startTimeS = startTimeS;
 	}
 	
+	//Convert seconds to hours for conversions
 	public static double convertSecsToHours(double ts){
 		return ts / 3600;
 	}
 	
+	//Calulcate distance depending on segment 
 	public static double[] calculateDistance(double th, double d ){
 		double di [] = new double [2];
 		
@@ -64,22 +72,18 @@ class Car {
 			return di;
 		}
 		
-		
-
 		double error [] = {0,0}; 
 		return error;
 	}
 
+	//Calulcate values for car a and to be reused later
 	public static double[][] calculateDefaultValues(Car c[]){
 		double t = 0.0;
 		double th = 0.0;
-		double d = 0.0;
 		int r = 1;
 		double dn [] = new double [2];
 		double rec[][] = new double[17][7];
-		//Arrays.fill(nums, 0); 
 
-		
 		while(r < 17) {
 			if (t == 0.0) {
 				for (int i = 0; i < rec[0].length; i++) {
@@ -96,11 +100,11 @@ class Car {
 				r++;
 			}
 			t+=30.0;
-			d = dn[1];
 		}
 		return rec;
 	}
 	
+	//Populates values for car b and c
 	public static double[][] populateValues(double r[][]) {
 		for (int i = 0; i < r.length; i++) {
 			for(int j = 0; j < r[0].length; j++) {	
@@ -112,10 +116,7 @@ class Car {
 						r[i][6] = r[i-3][2];
 					}
 				}
-			
-				
 			}
-			
 		}
 		return r;
 	}
@@ -125,16 +126,15 @@ class Car {
 		for (int i = 0; i < r.length; i++) {
 			for(int j = 0; j < r[0].length; j++) {	
 				System.out.print(r[i][j] + "\t\t");
-				
 			}
 			System.out.println();
 		}
 	}
 	
+	//Displays overall table of program
 	public static void displayTable(Car car []){
-		boolean atEnd = false;
+		//Array list that contains overall headers
 		ArrayList<String[]> tableRow= new ArrayList <String[]>();
-		
 		
 		String header [] = {"Time(s)\t\t", 
 		"car A\t\t\t\t",
@@ -148,6 +148,7 @@ class Car {
 		tableRow.add(header);
 		tableRow.add(header2);
 		
+		//Print headers
 		for (int i = 0; i < tableRow.size(); i++) {
 			String[] strings = tableRow.get(i);
 			
@@ -157,12 +158,11 @@ class Car {
 			System.out.println();
 			
 		}
+		//First initial values calulcated then repopulated for B and C then finally display final info
 		double r[][] = calculateDefaultValues(car);
 		double rp[][] = populateValues(r);
 		displayInfo(rp);
-		
 	}
-	
 	
 	public static void main(String[] args){
 		Car A = new Car("A",0.0);
