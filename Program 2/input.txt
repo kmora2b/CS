@@ -1,0 +1,33 @@
+<?xml version = "1.0"?>
+<class>
+   	<Grade>   
+		<Name>Jose</Name>   
+		<Assignment>Exam1</Assignment>   
+		<Value>100</Value>   
+		<LetterGrade>A</LetterGrade>  
+	</Grade>
+   
+   <student rollno = "493">
+      <firstname>Vaneet</firstname>
+      <lastname>Gupta</lastname>
+      <nickname>vinni</nickname>
+      <marks>95</marks>
+   </student>
+   
+   <student rollno = "593">
+      <firstname>jasvir</firstname>
+      <lastname>singn</lastname>
+      <nickname>jazz</nickname>
+      <marks>90</marks>
+   </student>
+    <Student>   
+		<Name> Jose </Name>   
+		<Rank> Freshman </Rank>   
+		<GPA> 0.0 </GPA>  
+	</Student>  
+	<Student>   
+		<Name> Alma </Name>   
+		<Rank> Senior </Rank>   <GPA> 3.49</GPA>  
+	</Student>       
+
+</class>
