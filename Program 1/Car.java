@@ -93,7 +93,7 @@ class Car {
 			
 			else {
 				th = convertSecsToHours(t);
-				dn = calculateDistance(th,d);
+				dn = calculateDistance(th,dn[1]);
 				rec[r][0] = t;
 				rec[r][1] = dn[0];
 				rec[r][2] = dn[1];
@@ -124,7 +124,7 @@ class Car {
 	
 	public static void displayInfo(double r[][]){
 		for (int i = 0; i < r.length; i++) {
-			for(int j = 0; j < r[0].length; j++) {	
+			for(int j = 0; j < r[0].length; j++) {
 				System.out.print(r[i][j] + "\t\t");
 			}
 			System.out.println();
